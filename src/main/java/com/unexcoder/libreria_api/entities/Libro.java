@@ -31,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Table(name="libro")
 @EntityListeners(AuditingEntityListener.class)
 public class Libro {
+    
     @Id
     private Long isbn;
     
@@ -44,6 +45,7 @@ public class Libro {
     
     @Column(name = "activo",nullable = false)
     @NotNull(message = "El estado no puede ser nulo")
+    @Builder.Default
     private boolean activo = true;
     
     

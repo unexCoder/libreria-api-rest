@@ -40,6 +40,7 @@ public class Autor {
 
     @Column(name = "activo",nullable = false)
     @NotNull(message = "El estado no puede ser nulo")
+    @Builder.Default
     private boolean activo = true;
     
     @NotNull(message = "El nombre no puede ser nulo")
@@ -48,6 +49,7 @@ public class Autor {
     private String nombre;
 
     @OneToMany(mappedBy = "autor")
+    @Builder.Default
     private Set<Libro> libros = new HashSet<>();
 
     // Audit fields

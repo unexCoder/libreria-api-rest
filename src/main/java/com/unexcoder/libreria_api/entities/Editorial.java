@@ -40,6 +40,7 @@ public class Editorial {
 
     @Column(name = "activa",nullable = false)
     @NotNull(message = "El estado no puede ser nulo")
+    @Builder.Default
     private boolean activa = true;
 
     @NotNull(message = "El nombre no puede ser nulo")
@@ -48,6 +49,7 @@ public class Editorial {
     private String nombre;
     
     @OneToMany(mappedBy = "editorial")
+    @Builder.Default
     private Set<Libro> libros = new HashSet<>();
     
     // Audit fields

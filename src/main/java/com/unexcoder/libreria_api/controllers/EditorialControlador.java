@@ -18,22 +18,26 @@ import com.unexcoder.libreria_api.services.EditorialServicio;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/editorial")
+@RequestMapping("/api/editorial")
 @RequiredArgsConstructor
 public class EditorialControlador {
     private final EditorialServicio editorialServicio;
     
     @PostMapping("crear")
     public ResponseEntity<Object> crearEditorial(@RequestParam String nombre) {
-       try {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return new ResponseEntity<>("El nombre no puede estar vacío", HttpStatus.BAD_REQUEST);
+        }
+        try {
            editorialServicio.crearEditorial(nombre);
-           return new ResponseEntity<>(HttpStatus.OK);
+           return new ResponseEntity<>("Editorial creada exitosamente",HttpStatus.OK);
        } catch (Exception e) {
-           return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+           return new ResponseEntity<>("Error al crear editorial: " + e.getMessage(),
+                            HttpStatus.INTERNAL_SERVER_ERROR);
        }
     }
 
-    @GetMapping("listar")
+    @GetMapping("")
     public ResponseEntity<List<Editorial>> listarEditoriales() {
         try {
             List<Editorial> editoriales = editorialServicio.listarEditoriales();  // Llama al servicio para obtener la lista de autores
@@ -45,11 +49,15 @@ public class EditorialControlador {
 
     @PatchMapping("actualizar")
     public ResponseEntity<Object> actualizarEditorial(@RequestParam String id, @RequestParam String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return new ResponseEntity<>("El nombre no puede estar vacío", HttpStatus.BAD_REQUEST);
+        }
         try {
             editorialServicio.modificarEditorial(UUID.fromString(id),nombre);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Editorial creada exitosamente",HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al crear editorial: " + e.getMessage(),
+                            HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -57,13 +65,14 @@ public class EditorialControlador {
     public ResponseEntity<Object> eliminarEditorial(@RequestParam String id) {
         try {
             editorialServicio.eliminarEditorial(UUID.fromString(id));
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Editorial eliminada exitosamente",HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al eliminar editorial: " + e.getMessage(),
+                            HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("listar/activas")
+    @GetMapping("activas")
     public ResponseEntity<List<Editorial>> listarEditorialesActivas(@RequestParam boolean activa) {
         try {
             List<Editorial> editoriales = editorialServicio.listarEditorialesActivas(activa);  // Llama al servicio para obtener la lista de autores

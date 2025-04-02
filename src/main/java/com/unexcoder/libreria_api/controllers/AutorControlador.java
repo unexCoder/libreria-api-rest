@@ -17,7 +17,7 @@ import com.unexcoder.libreria_api.services.AutorServicio;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/autor")
+@RequestMapping("/api/autor")
 @RequiredArgsConstructor
 public class AutorControlador {
     private final AutorServicio autorServicio;
@@ -25,7 +25,7 @@ public class AutorControlador {
     @PostMapping(value = "crear")
     public ResponseEntity<Object> crearAutor(@RequestParam(required = true) String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            return new ResponseEntity<>("El nombre no puede estar vacío o malformado", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("El nombre no puede estar vacío", HttpStatus.BAD_REQUEST);
         }
         try {
             autorServicio.crearAutor(nombre);
@@ -37,7 +37,7 @@ public class AutorControlador {
         }
     }
 
-    @GetMapping("listar")
+    @GetMapping("")
     public ResponseEntity<List<Autor>> listarAutores() {
         try {
             List<Autor> autores = autorServicio.listarAutores(); // Llama al servicio para obtener la lista de autores
@@ -50,7 +50,7 @@ public class AutorControlador {
     @PatchMapping("actualizar")
     public ResponseEntity<Object> actualizarAutor(@RequestParam String id, @RequestParam String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            return new ResponseEntity<>("El nombre no puede estar vacío o malformado", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("El nombre no puede estar vacío", HttpStatus.BAD_REQUEST);
         }
         try {
             autorServicio.modificarAutor(UUID.fromString(id),nombre);
@@ -66,13 +66,13 @@ public class AutorControlador {
     public ResponseEntity<Object> eliminarAutor(@RequestParam String id) {
         try {
             autorServicio.eliminarAutor(UUID.fromString(id));
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Autor eliminado exitosamente",HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al eliminar autor: " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("listar/activos")
+    @GetMapping("activos")
     public ResponseEntity<List<Autor>> listarAutoresActivos(@RequestParam boolean activo) {
         try {
             List<Autor> autores = autorServicio.listarAutoresActivos(activo); // Llama al servicio para obtener la lista de autores

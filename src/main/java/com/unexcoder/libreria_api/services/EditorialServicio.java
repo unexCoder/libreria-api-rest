@@ -68,6 +68,8 @@ public class EditorialServicio {
         return editorialRepositorio.getReferenceById(id);
     }
 
+    // este metodo implemeta el filtro activo/inactivo en el servicio
+    // posible implementar consulta especifica en repositorio para optimizar
     @Transactional(readOnly = true)
     public List<Editorial> listarEditorialesActivas(boolean activa) {
         List<Editorial> editoriales = new ArrayList<>();

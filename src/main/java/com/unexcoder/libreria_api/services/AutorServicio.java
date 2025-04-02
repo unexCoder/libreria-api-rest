@@ -69,6 +69,8 @@ public class AutorServicio {
         return autorRepositorio.getReferenceById(id);
     }
 
+    // este metodo implemeta el filtro activo/inactivo en el servicio
+    // posible implementar consulta especifica en repositorio para optimizar
     @Transactional(readOnly = true)
     public List<Autor> listarAutoresActivos(boolean activo) {
         List<Autor> autores = new ArrayList<>();

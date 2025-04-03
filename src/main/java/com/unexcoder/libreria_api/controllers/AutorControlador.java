@@ -8,11 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unexcoder.libreria_api.entities.Autor;
+import com.unexcoder.libreria_api.models.AutorActivoDTO;
 import com.unexcoder.libreria_api.models.AutorDTO;
 import com.unexcoder.libreria_api.services.AutorServicio;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +67,21 @@ public class AutorControlador {
         }
         try {
             autorServicio.modificarAutor(UUID.fromString(id), nombre);
+            return new ResponseEntity<>("Autor actualizado exitosamente", HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error al actualizar autor: " + e.getMessage());
+            return new ResponseEntity<>("Error al actualizar autor: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("actualizarDTO")
+    public ResponseEntity<Object> actualizarAutor(@RequestBody AutorActivoDTO autorActivoDTO) {
+        if (autorActivoDTO.getNombre() == null || autorActivoDTO.getNombre().trim().isEmpty()) {
+            return new ResponseEntity<>("El nombre no puede estar vacío", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            autorServicio.modificarAutor(autorActivoDTO);
             return new ResponseEntity<>("Autor actualizado exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             System.err.println("Error al actualizar autor: " + e.getMessage());

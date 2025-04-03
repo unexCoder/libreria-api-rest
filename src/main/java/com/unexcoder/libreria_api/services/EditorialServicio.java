@@ -29,6 +29,15 @@ public class EditorialServicio {
         editorial.setActiva(true);
         editorialRepositorio.save(editorial);
     }
+    
+    @Transactional
+    public void crearEditorial(EditorialDTO editorialDTO) {
+        // validar(nombre);
+        Editorial editorial = new Editorial();
+        editorial.setNombre(editorialDTO.getNombre());
+        editorial.setActiva(true);
+        editorialRepositorio.save(editorial);
+    }
 
     @Transactional(readOnly = true)
     public List<Editorial> listarEditoriales() {

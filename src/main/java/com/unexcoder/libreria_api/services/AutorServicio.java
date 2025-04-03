@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unexcoder.libreria_api.entities.Autor;
+import com.unexcoder.libreria_api.models.AutorActivoDTO;
 import com.unexcoder.libreria_api.models.AutorDTO;
 import com.unexcoder.libreria_api.repositories.AutorRepositorio;
 
@@ -51,6 +52,18 @@ public class AutorServicio {
         if (autor.isPresent()) {
             Autor a = autor.get();
             a.setNombre(nombre);
+            autorRepositorio.save(a);
+        }
+    }
+
+    @Transactional
+    public void modificarAutor(AutorActivoDTO autorActivoDTO) {
+        // validar(nombre);
+        Optional<Autor> autor = autorRepositorio.findById(autorActivoDTO.getId());
+        if (autor.isPresent()) {
+            Autor a = autor.get();
+            a.setNombre(autorActivoDTO.getNombre());
+            a.setActivo(autorActivoDTO.isActivo());
             autorRepositorio.save(a);
         }
     }

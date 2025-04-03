@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.unexcoder.libreria_api.entities.Editorial;
+import com.unexcoder.libreria_api.models.EditorialDTO;
 import com.unexcoder.libreria_api.repositories.EditorialRepositorio;
 
 import lombok.RequiredArgsConstructor;
@@ -27,16 +29,23 @@ public class EditorialServicio {
         editorial.setActiva(true);
         editorialRepositorio.save(editorial);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Editorial> listarEditoriales() {
         List<Editorial> editoriales = new ArrayList<>();
         editoriales = editorialRepositorio.findAll();
         return editoriales;
     }
-    
+
+    @Transactional(readOnly = true)
+    public List<EditorialDTO> listarEditorialesDTO() {
+        return editorialRepositorio.findAll().stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
+    }
+
     @Transactional
-    public void modificarEditorial(UUID id,String nombre) {
+    public void modificarEditorial(UUID id, String nombre) {
         // validar(nombre);
         Optional<Editorial> editorial = editorialRepositorio.findById(id);
         if (editorial.isPresent()) {
@@ -45,7 +54,7 @@ public class EditorialServicio {
             editorialRepositorio.save(e);
         }
     }
- 
+
     @Transactional
     public void eliminarEditorial(UUID id) {
         // validar(nombre);
@@ -58,9 +67,9 @@ public class EditorialServicio {
     }
 
     // public void validar(String nombre) {
-    //     if (nombre.isEmpty() || nombre == null) {
-    //         throw new ValidationException("El campo 'nombre' no puede estar vacío");
-    //     }
+    // if (nombre.isEmpty() || nombre == null) {
+    // throw new ValidationException("El campo 'nombre' no puede estar vacío");
+    // }
     // }
 
     @Transactional(readOnly = true)
@@ -74,10 +83,21 @@ public class EditorialServicio {
     public List<Editorial> listarEditorialesActivas(boolean activa) {
         List<Editorial> editoriales = new ArrayList<>();
         editoriales = editorialRepositorio
-            .findAll()
-            .stream()
-            .filter(editorial -> editorial.isActiva() == activa)
-            .collect(Collectors.toList());
+                .findAll()
+                .stream()
+                .filter(editorial -> editorial.isActiva() == activa)
+                .collect(Collectors.toList());
         return editoriales;
+    }
+
+    // private methods
+    private EditorialDTO convertToDTO(Editorial editorial) {
+        EditorialDTO dto = new EditorialDTO();
+        dto.setId(editorial.getId());
+        dto.setNombre(editorial.getNombre());
+        dto.setActivo(editorial.isActiva());
+        dto.setCreatedAt(editorial.getCreatedAt());
+        dto.setUpdatedAt(editorial.getUpdatedAt());
+        return dto;
     }
 }

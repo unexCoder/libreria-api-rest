@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unexcoder.libreria_api.entities.Editorial;
+import com.unexcoder.libreria_api.models.EditorialDTO;
 import com.unexcoder.libreria_api.services.EditorialServicio;
 
 import lombok.RequiredArgsConstructor;
@@ -37,16 +38,28 @@ public class EditorialControlador {
        }
     }
 
+    // @GetMapping("")
+    // public ResponseEntity<List<Editorial>> listarEditoriales() {
+    //     try {
+    //         List<Editorial> editoriales = editorialServicio.listarEditoriales();  // Llama al servicio para obtener la lista de autores
+    //         return new ResponseEntity<>(editoriales,HttpStatus.OK);
+    //     } catch (Exception e) {
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
+    
     @GetMapping("")
-    public ResponseEntity<List<Editorial>> listarEditoriales() {
+    public ResponseEntity<List<EditorialDTO>> listarEditoriales() {
         try {
-            List<Editorial> editoriales = editorialServicio.listarEditoriales();  // Llama al servicio para obtener la lista de autores
-            return new ResponseEntity<>(editoriales,HttpStatus.OK);
+            List<EditorialDTO> editoriales = editorialServicio.listarEditorialesDTO();
+            return new ResponseEntity<>(editoriales, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            
         }
     }
 
+    
     @PatchMapping("actualizar")
     public ResponseEntity<Object> actualizarEditorial(@RequestParam String id, @RequestParam String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {

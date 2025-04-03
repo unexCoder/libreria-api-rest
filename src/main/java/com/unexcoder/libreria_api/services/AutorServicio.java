@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unexcoder.libreria_api.entities.Autor;
+import com.unexcoder.libreria_api.models.AutorDTO;
 import com.unexcoder.libreria_api.repositories.AutorRepositorio;
 
 import lombok.RequiredArgsConstructor;
@@ -28,16 +29,23 @@ public class AutorServicio {
         autor.setActivo(true);
         autorRepositorio.save(autor);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Autor> listarAutores() {
         List<Autor> autores = new ArrayList<>();
         autores = autorRepositorio.findAll();
         return autores;
     }
-    
+
+    @Transactional(readOnly = true)
+    public List<AutorDTO> listarAutoresDTO() {
+        return autorRepositorio.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
-    public void modificarAutor(UUID id,String nombre) {
+    public void modificarAutor(UUID id, String nombre) {
         // validar(nombre);
         Optional<Autor> autor = autorRepositorio.findById(id);
         if (autor.isPresent()) {
@@ -46,7 +54,7 @@ public class AutorServicio {
             autorRepositorio.save(a);
         }
     }
- 
+
     @Transactional
     public void eliminarAutor(UUID id) {
         // validar(nombre);
@@ -59,9 +67,9 @@ public class AutorServicio {
     }
 
     // public void validar(String nombre) {
-    //     if (nombre.isEmpty() || nombre == null) {
-    //         throw new ValidationException("El campo 'nombre' no puede estar vacío");
-    //     }
+    // if (nombre.isEmpty() || nombre == null) {
+    // throw new ValidationException("El campo 'nombre' no puede estar vacío");
+    // }
     // }
 
     @Transactional(readOnly = true)
@@ -75,10 +83,21 @@ public class AutorServicio {
     public List<Autor> listarAutoresActivos(boolean activo) {
         List<Autor> autores = new ArrayList<>();
         autores = autorRepositorio
-            .findAll()
-            .stream()
-            .filter(autor -> autor.isActivo() == activo)
-            .collect(Collectors.toList());
+                .findAll()
+                .stream()
+                .filter(autor -> autor.isActivo() == activo)
+                .collect(Collectors.toList());
         return autores;
+    }
+
+    // private methods
+    private AutorDTO convertToDTO(Autor autor) {
+        AutorDTO dto = new AutorDTO();
+        dto.setId(autor.getId());
+        dto.setNombre(autor.getNombre());
+        dto.setActivo(autor.isActivo());
+        dto.setCreatedAt(autor.getCreatedAt());
+        dto.setUpdatedAt(autor.getUpdatedAt());
+        return dto;
     }
 }

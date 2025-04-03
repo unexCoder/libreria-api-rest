@@ -9,9 +9,13 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+// import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,6 +36,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="editorial")
 @EntityListeners(AuditingEntityListener.class)
+
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties(value = {"libros", "hibernateLazyInitializer", "handler"}, allowSetters = true)
+
 public class Editorial {
 
     @Id
@@ -48,7 +56,9 @@ public class Editorial {
     @Column(name = "nombre",length = 255, nullable = false)
     private String nombre;
     
-    @OneToMany(mappedBy = "editorial")
+    @OneToMany(mappedBy = "editorial", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("editorial")
+    // @JsonManagedReference
     @Builder.Default
     private Set<Libro> libros = new HashSet<>();
     

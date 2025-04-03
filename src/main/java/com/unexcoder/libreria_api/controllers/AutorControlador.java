@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unexcoder.libreria_api.entities.Autor;
+import com.unexcoder.libreria_api.models.AutorDTO;
 import com.unexcoder.libreria_api.services.AutorServicio;
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AutorControlador {
     private final AutorServicio autorServicio;
-    
+
     @PostMapping(value = "crear")
     public ResponseEntity<Object> crearAutor(@RequestParam(required = true) String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
@@ -32,16 +33,26 @@ public class AutorControlador {
             return new ResponseEntity<>("Autor creado exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             System.err.println("Error al crear autor: " + e.getMessage());
-            return new ResponseEntity<>("Error al crear autor: " + e.getMessage(), 
-                                     HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al crear autor: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    // @GetMapping("")
+    // public ResponseEntity<List<Autor>> listarAutores() {
+    //     try {
+    //         List<Autor> autores = autorServicio.listarAutores(); // Llama al servicio para obtener la lista de autores
+    //         return new ResponseEntity<>(autores, HttpStatus.OK);
+    //     } catch (Exception e) {
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
+
     @GetMapping("")
-    public ResponseEntity<List<Autor>> listarAutores() {
+    public ResponseEntity<List<AutorDTO>> listarAutores() {
         try {
-            List<Autor> autores = autorServicio.listarAutores(); // Llama al servicio para obtener la lista de autores
-            return new ResponseEntity<>(autores,HttpStatus.OK);
+            List<AutorDTO> autores = autorServicio.listarAutoresDTO();
+            return new ResponseEntity<>(autores, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -53,12 +64,12 @@ public class AutorControlador {
             return new ResponseEntity<>("El nombre no puede estar vacío", HttpStatus.BAD_REQUEST);
         }
         try {
-            autorServicio.modificarAutor(UUID.fromString(id),nombre);
+            autorServicio.modificarAutor(UUID.fromString(id), nombre);
             return new ResponseEntity<>("Autor actualizado exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             System.err.println("Error al actualizar autor: " + e.getMessage());
-            return new ResponseEntity<>("Error al actualizar autor: " + e.getMessage(), 
-                                     HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al actualizar autor: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -66,17 +77,18 @@ public class AutorControlador {
     public ResponseEntity<Object> eliminarAutor(@RequestParam String id) {
         try {
             autorServicio.eliminarAutor(UUID.fromString(id));
-            return new ResponseEntity<>("Autor eliminado exitosamente",HttpStatus.OK);
+            return new ResponseEntity<>("Autor eliminado exitosamente", HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Error al eliminar autor: " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al eliminar autor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("activos")
     public ResponseEntity<List<Autor>> listarAutoresActivos(@RequestParam boolean activo) {
         try {
-            List<Autor> autores = autorServicio.listarAutoresActivos(activo); // Llama al servicio para obtener la lista de autores
-            return new ResponseEntity<>(autores,HttpStatus.OK);
+            List<Autor> autores = autorServicio.listarAutoresActivos(activo); // Llama al servicio para obtener la lista
+                                                                              // de autores
+            return new ResponseEntity<>(autores, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

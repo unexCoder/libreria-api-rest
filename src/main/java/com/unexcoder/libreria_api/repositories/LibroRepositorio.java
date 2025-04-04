@@ -22,4 +22,5 @@ public interface LibroRepositorio extends JpaRepository<Libro,Long>{
     // // Add this method for general listing
     // @Query("SELECT l FROM Libro l")
     // List<Libro> findAll();
+    
 }

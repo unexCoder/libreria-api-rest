@@ -61,6 +61,16 @@ public class LibroServicio {
         return libroRepositorio.listarActivosDTO();
     }
 
+    @Transactional(readOnly = true)
+    public LibroDTO libroByIsbn(Long isbn) {
+        Libro libro = libroRepositorio.findById(isbn)
+            .orElse(null);
+        if (libro != null) {
+            return convertToDTO(libro);
+        }
+        return null;
+    }
+
     // private methods
     private LibroDTO convertToDTO(Libro libro) {
         LibroDTO dto = new LibroDTO();

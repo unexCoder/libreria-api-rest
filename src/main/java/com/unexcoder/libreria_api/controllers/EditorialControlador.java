@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -105,6 +106,20 @@ public class EditorialControlador {
         try {
             List<Editorial> editoriales = editorialServicio.listarEditorialesActivas(activa);  // Llama al servicio para obtener la lista de autores
             return new ResponseEntity<>(editoriales,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<EditorialDTO> editorialById(@PathVariable String id) {
+        try {
+            EditorialDTO editorial = editorialServicio.editorialById(UUID.fromString(id));
+            if (editorial != null) {
+                return new ResponseEntity<>(editorial, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

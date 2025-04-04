@@ -36,7 +36,31 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-## API Endpoints
+## Endpoints
+
+### Books (`/api/libro`)
+- `GET /` - List all books
+- `GET /activos` - List only active books 
+- `GET /{isbn}` - Get book by ISBN
+- `POST /crear` - Create new book
+
+### Authors (`/api/autor`)
+- `GET /` - List all authors
+- `GET /activos` - List active authors
+- `GET /{id}` - Get author by ID
+- `POST /crear` - Create author
+- `PATCH /actualizar` - Update author
+- `PATCH /actualizarDTO` - Update author with DTO
+- `PATCH /eliminar` - Soft delete author
+
+### Publishers (`/api/editorial`)
+- `GET /` - List all publishers
+- `GET /activas` - List active publishers
+- `GET /{id}` - Get publisher by ID
+- `POST /crear` - Create publisher
+- `POST /crearDTO` - Create publisher with DTO
+- `PATCH /actualizar` - Update publisher
+- `PATCH /eliminar` - Soft delete publisher
 
 <!-- ### Authentication
 - `POST /auth/login` - User login
@@ -48,13 +72,6 @@ mvn spring-boot:run
 - `POST /api/users` - Create new user
 - `PUT /api/users/{id}` - Update user
 - `DELETE /api/users/{id}` - Delete user -->
-
-### Books
-- `GET /api/books` - Get all books
-- `GET /api/books/{id}` - Get book by ID
-- `POST /api/books` - Add a new book
-- `PUT /api/books/{id}` - Update book details
-- `DELETE /api/books/{id}` - Delete a book
 
 <!-- ### Categories
 - `GET /api/categories` - Get all categories
@@ -69,20 +86,6 @@ mvn spring-boot:run
 - `POST /api/orders` - Create a new order
 - `PUT /api/orders/{id}` - Update order details
 - `DELETE /api/orders/{id}` - Delete an order -->
-
-### Editorials
-- `GET /api/editorial` - Get all editorials
-- `POST /api/editorial/crear` - Create a new editorial
-- `PATCH /api/editorial/actualizar` - Update an editorial
-- `PATCH /api/editorial/eliminar` - Delete an editorial
-- `GET /api/editorial/activas` - Get active/inactive editorials
-
-### Authors
-- `GET /api/autor` - Get all authors
-- `POST /api/autor/crear` - Create a new author
-- `PATCH /api/autor/actualizar` - Update an author
-- `PATCH /api/autor/eliminar` - Delete an author
-- `GET /api/autor/activos` - Get active/inactive authors
 
 ## Security
 

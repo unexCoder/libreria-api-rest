@@ -53,6 +53,16 @@ public class EditorialServicio {
         .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public EditorialDTO editorialById(UUID id) {
+        Editorial editorial = editorialRepositorio.findById(id)
+            .orElse(null);
+        if (editorial != null) {
+            return convertToDTO(editorial);
+        }
+        return null;
+    }
+
     @Transactional
     public void modificarEditorial(UUID id, String nombre) {
         // validar(nombre);

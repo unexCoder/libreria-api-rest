@@ -45,6 +45,16 @@ public class AutorServicio {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public AutorDTO autorById(UUID id) {
+        Autor autor = autorRepositorio.findById(id)
+                .orElse(null);
+        if (autor != null) {
+            return convertToDTO(autor);
+        }
+        return null;
+    }
+
     @Transactional
     public void modificarAutor(UUID id, String nombre) {
         // validar(nombre);

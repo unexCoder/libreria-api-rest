@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.unexcoder.libreria_api.entities.Autor;
 import com.unexcoder.libreria_api.models.AutorActivoDTO;
 import com.unexcoder.libreria_api.models.AutorDTO;
 import com.unexcoder.libreria_api.services.AutorServicio;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -111,4 +113,17 @@ public class AutorControlador {
         }
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<AutorDTO> autorById(@PathVariable String id) {
+        try {
+            AutorDTO autor = autorServicio.autorById(UUID.fromString(id));
+            if (autor != null) {
+                return new ResponseEntity<>(autor, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

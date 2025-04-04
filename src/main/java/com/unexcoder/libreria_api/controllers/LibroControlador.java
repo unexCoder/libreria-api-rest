@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,5 +69,18 @@ public class LibroControlador {
         }
     }
 
+    @GetMapping("{isbn}")
+    public ResponseEntity<LibroDTO> libroByIsbn(@PathVariable Long isbn) {
+        try {
+            LibroDTO libro = libroservicio.libroByIsbn(isbn);
+            if (libro != null) {
+                return new ResponseEntity<>(libro, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

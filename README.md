@@ -43,7 +43,13 @@ mvn spring-boot:run
 - `GET /activos` - List only active books 
 - `GET /{isbn}` - Get book by ISBN
 - `POST /crear` - Create new book
-
+- `GET /editorial/{editorialId}` - Get books by publisher
+- `GET /autor/{autorId}` - Get books by author
+- `GET /search` - Search books by author and/or publisher
+  - Query params: 
+    - autorId (optional)
+    - editorialId (optional)
+    
 ### Authors (`/api/autor`)
 - `GET /` - List all authors
 - `GET /activos` - List active authors

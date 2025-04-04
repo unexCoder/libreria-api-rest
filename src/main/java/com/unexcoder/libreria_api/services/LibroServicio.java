@@ -11,6 +11,9 @@ import com.unexcoder.libreria_api.entities.Editorial;
 import com.unexcoder.libreria_api.entities.Libro;
 import com.unexcoder.libreria_api.models.LibroActivoDTO;
 import com.unexcoder.libreria_api.models.LibroDTO;
+import com.unexcoder.libreria_api.models.LibroDetailDTO;
+import com.unexcoder.libreria_api.models.LibrosAutorDTO;
+import com.unexcoder.libreria_api.models.LibrosEditorialDTO;
 import com.unexcoder.libreria_api.projections.LibroActivo;
 import com.unexcoder.libreria_api.repositories.LibroRepositorio;
 
@@ -71,6 +74,21 @@ public class LibroServicio {
         return null;
     }
 
+    @Transactional(readOnly = true)
+    public List<LibrosEditorialDTO> librosByEditorial(UUID editorialId) {
+        return libroRepositorio.findLibrosByEditorial(editorialId);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<LibrosAutorDTO> librosAutor(UUID id) {
+        return libroRepositorio.findLibrosByAutor(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LibroDetailDTO> findLibros(UUID autorId, UUID editorialId) {
+        return libroRepositorio.findLibrosByAutorOrEditorial(autorId, editorialId);
+    }
+    
     // private methods
     private LibroDTO convertToDTO(Libro libro) {
         LibroDTO dto = new LibroDTO();

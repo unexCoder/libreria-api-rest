@@ -89,6 +89,17 @@ public class AutorServicio {
         }
     }
 
+    // hard delete
+    @Transactional
+    public void eliminarAutorlHard(UUID id) {
+        // validar(nombre);
+        Optional<Autor> autor = autorRepositorio.findById(id);
+        if (autor.isPresent()) {
+            Autor a = autor.get();
+            autorRepositorio.delete(a);
+        }
+    }
+
     // public void validar(String nombre) {
     // if (nombre.isEmpty() || nombre == null) {
     // throw new ValidationException("El campo 'nombre' no puede estar vacío");

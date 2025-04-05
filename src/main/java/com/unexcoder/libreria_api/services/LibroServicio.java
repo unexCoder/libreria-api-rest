@@ -88,6 +88,11 @@ public class LibroServicio {
     public List<LibroDetailDTO> findLibros(UUID autorId, UUID editorialId) {
         return libroRepositorio.findLibrosByAutorOrEditorial(autorId, editorialId);
     }
+
+    @Transactional(readOnly = true)
+    public List<LibroDetailDTO> findLibros(String txt) {
+        return libroRepositorio.findLibrosByText(txt);
+    }
     
     // private methods
     private LibroDTO convertToDTO(Libro libro) {

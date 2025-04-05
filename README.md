@@ -49,6 +49,7 @@ mvn spring-boot:run
   - Query params: 
     - autorId (optional)
     - editorialId (optional)
+- `GET /search/{txt}` - Search books (title, author, publisher) by txt
     
 ### Authors (`/api/autor`)
 - `GET /` - List all authors
@@ -58,6 +59,7 @@ mvn spring-boot:run
 - `PATCH /actualizar` - Update author
 - `PATCH /actualizarDTO` - Update author with DTO
 - `PATCH /eliminar` - Soft delete author
+- `DELETE /eliminar/{id}` - Hard delete author
 
 ### Publishers (`/api/editorial`)
 - `GET /` - List all publishers
@@ -67,6 +69,7 @@ mvn spring-boot:run
 - `POST /crearDTO` - Create publisher with DTO
 - `PATCH /actualizar` - Update publisher
 - `PATCH /eliminar` - Soft delete publisher
+- `DELETE /eliminar/{id}` - Hard delete publisher
 
 <!-- ### Authentication
 - `POST /auth/login` - User login

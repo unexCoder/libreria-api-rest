@@ -40,4 +40,13 @@ public interface LibroRepositorio extends JpaRepository<Libro, Long> {
        "WHERE (:autorId IS NULL OR l.autor.id = :autorId) " +
        "AND (:editorialId IS NULL OR l.editorial.id = :editorialId)")
    List<LibroDetailDTO> findLibrosByAutorOrEditorial(@Param("autorId") UUID autorId, @Param("editorialId") UUID editorialId);
+
+   @Query("SELECT new com.unexcoder.libreria_api.models.LibroDetailDTO(" +
+       "l.isbn, l.titulo, l.ejemplares, l.autor.nombre, l.editorial.nombre, l.activo) " +
+       "FROM Libro l " +
+       "WHERE (LOWER(l.titulo) LIKE LOWER(CONCAT('%', :txt, '%')) OR " +
+       "      LOWER(l.autor.nombre) LIKE LOWER(CONCAT('%', :txt, '%')) OR " +
+       "      LOWER(l.editorial.nombre) LIKE LOWER(CONCAT('%', :txt, '%'))) ")
+      List<LibroDetailDTO> findLibrosByText(
+       @Param("txt") String txt);
 }

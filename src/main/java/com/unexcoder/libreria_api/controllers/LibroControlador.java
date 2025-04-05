@@ -125,4 +125,14 @@ public class LibroControlador {
         }
     }
 
+    @GetMapping("/search/{txt}")
+    public ResponseEntity<List<LibroDetailDTO>> searchLibrosByText(@PathVariable String txt) {
+        try {
+            List<LibroDetailDTO> libros = libroservicio.findLibros(txt);
+            return ResponseEntity.ok(libros);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 }

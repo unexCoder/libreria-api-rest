@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unexcoder.libreria_api.entities.Editorial;
 import com.unexcoder.libreria_api.models.EditorialDTO;
+// import com.unexcoder.libreria_api.models.EditorialDetailDTO;
 import com.unexcoder.libreria_api.repositories.EditorialRepositorio;
 
 import lombok.RequiredArgsConstructor;
@@ -84,6 +85,17 @@ public class EditorialServicio {
             editorialRepositorio.save(e);
         }
     }
+    
+    // hard delete
+    @Transactional
+    public void eliminarEditorialHard(UUID id) {
+        // validar(nombre);
+        Optional<Editorial> editorial = editorialRepositorio.findById(id);
+        if (editorial.isPresent()) {
+            Editorial e = editorial.get();
+            editorialRepositorio.delete(e);
+        }
+    }
 
     // public void validar(String nombre) {
     // if (nombre.isEmpty() || nombre == null) {
@@ -95,6 +107,14 @@ public class EditorialServicio {
     public Editorial getOne(UUID id) {
         return editorialRepositorio.getReferenceById(id);
     }
+
+
+    // public List<EditorialDetailDTO> buscarPorTexto(String txt) {
+        
+    //     List<EditorialDetailDTO> editoriales = editorialRepositorio.findEditorialByText(txt);
+    //     return editoriales.stream()
+    //         .collect(Collectors.toList());
+    // }
 
     // este metodo implemeta el filtro activo/inactivo en el servicio
     // posible implementar consulta especifica en repositorio para optimizar

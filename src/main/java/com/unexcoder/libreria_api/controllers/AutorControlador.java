@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -96,6 +97,16 @@ public class AutorControlador {
     public ResponseEntity<Object> eliminarAutor(@RequestParam String id) {
         try {
             autorServicio.eliminarAutor(UUID.fromString(id));
+            return new ResponseEntity<>("Autor eliminado exitosamente", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al eliminar autor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("eliminar/{id}")
+    public ResponseEntity<Object> eliminarAutorHard(@PathVariable String id) {
+        try {
+            autorServicio.eliminarAutorlHard(UUID.fromString(id));
             return new ResponseEntity<>("Autor eliminado exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al eliminar autor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

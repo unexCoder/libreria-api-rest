@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.unexcoder.libreria_api.entities.Editorial;
 import com.unexcoder.libreria_api.models.EditorialDTO;
+// import com.unexcoder.libreria_api.models.EditorialDetailDTO;
 import com.unexcoder.libreria_api.services.EditorialServicio;
 
 import lombok.RequiredArgsConstructor;
@@ -100,6 +102,17 @@ public class EditorialControlador {
                             HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @DeleteMapping("eliminar/{id}")
+    public ResponseEntity<Object> eliminarEditorialHard(@PathVariable String id) {
+        try {
+            editorialServicio.eliminarEditorialHard(UUID.fromString(id));
+            return new ResponseEntity<>("Editorial eliminada exitosamente",HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al eliminar editorial: " + e.getMessage(),
+                            HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping("activas")
     public ResponseEntity<List<Editorial>> listarEditorialesActivas(@RequestParam boolean activa) {
@@ -124,5 +137,15 @@ public class EditorialControlador {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // @GetMapping("search/{txt}")
+    // public ResponseEntity<List<EditorialDetailDTO>> buscarEditorial(@PathVariable String txt) {
+    //     try {
+    //         List<EditorialDetailDTO> editoriales = editorialServicio.buscarPorTexto(txt)
+    //         return new ResponseEntity<>(editoriales, HttpStatus.OK);
+    //     } catch (Exception e) {
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 }
 

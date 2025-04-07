@@ -137,4 +137,17 @@ public class AutorControlador {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/search/{txt}")
+    public ResponseEntity<List<AutorActivoDTO>> searchautorByText(@PathVariable String txt) {
+        try {
+            List<AutorActivoDTO> autores = autorServicio.findAutorByTxt(txt);
+            if (autores.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            return ResponseEntity.ok(autores);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

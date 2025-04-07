@@ -60,6 +60,7 @@ mvn spring-boot:run
 - `PATCH /actualizarDTO` - Update author with DTO
 - `PATCH /eliminar` - Soft delete author
 - `DELETE /eliminar/{id}` - Hard delete author
+- `GET /search/{txt}` - Search author by txt
 
 ### Publishers (`/api/editorial`)
 - `GET /` - List all publishers
@@ -70,6 +71,7 @@ mvn spring-boot:run
 - `PATCH /actualizar` - Update publisher
 - `PATCH /eliminar` - Soft delete publisher
 - `DELETE /eliminar/{id}` - Hard delete publisher
+- `GET /search/{txt}` - Search publisher by txt
 
 <!-- ### Authentication
 - `POST /auth/login` - User login

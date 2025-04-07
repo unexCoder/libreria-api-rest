@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.unexcoder.libreria_api.entities.Editorial;
 import com.unexcoder.libreria_api.models.EditorialDTO;
+import com.unexcoder.libreria_api.models.EditorialDetailDTO;
 // import com.unexcoder.libreria_api.models.EditorialDetailDTO;
 import com.unexcoder.libreria_api.services.EditorialServicio;
 
@@ -138,14 +139,17 @@ public class EditorialControlador {
         }
     }
 
-    // @GetMapping("search/{txt}")
-    // public ResponseEntity<List<EditorialDetailDTO>> buscarEditorial(@PathVariable String txt) {
-    //     try {
-    //         List<EditorialDetailDTO> editoriales = editorialServicio.buscarPorTexto(txt)
-    //         return new ResponseEntity<>(editoriales, HttpStatus.OK);
-    //     } catch (Exception e) {
-    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
+    @GetMapping("search/{txt}")
+    public ResponseEntity<List<EditorialDetailDTO>> buscarEditorial(@PathVariable String txt) {
+        try {
+            List<EditorialDetailDTO> editoriales = editorialServicio.findEditorialByTxt(txt);
+            if (editoriales.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(editoriales, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 

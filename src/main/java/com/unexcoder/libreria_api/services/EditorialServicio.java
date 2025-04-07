@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unexcoder.libreria_api.entities.Editorial;
 import com.unexcoder.libreria_api.models.EditorialDTO;
+import com.unexcoder.libreria_api.models.EditorialDetailDTO;
 // import com.unexcoder.libreria_api.models.EditorialDetailDTO;
 import com.unexcoder.libreria_api.repositories.EditorialRepositorio;
 
@@ -129,6 +130,19 @@ public class EditorialServicio {
         return editoriales;
     }
 
+    @Transactional(readOnly = true)
+    public List<EditorialDetailDTO> findEditorialByTxt(String txt) {
+        return editorialRepositorio.findEditorialByText(txt).stream()
+                .map(editorial -> {
+                    EditorialDetailDTO dto = new EditorialDetailDTO();
+                    dto.setId(editorial.getId());
+                    dto.setNombre(editorial.getNombre());
+                    dto.setActivo(editorial.isActivo());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+    
     // private methods
     private EditorialDTO convertToDTO(Editorial editorial) {
         EditorialDTO dto = new EditorialDTO();

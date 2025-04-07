@@ -124,6 +124,20 @@ public class AutorServicio {
         return autores;
     }
 
+
+    @Transactional(readOnly = true)
+    public List<AutorActivoDTO> findAutorByTxt(String txt) {
+        return autorRepositorio.findAutorByText(txt).stream()
+                .map(autor -> {
+                    AutorActivoDTO dto = new AutorActivoDTO();
+                    dto.setId(autor.getId());
+                    dto.setNombre(autor.getNombre());
+                    dto.setActivo(autor.isActivo());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
     // private methods
     private AutorDTO convertToDTO(Autor autor) {
         AutorDTO dto = new AutorDTO();

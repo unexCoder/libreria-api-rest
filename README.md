@@ -50,6 +50,7 @@ mvn spring-boot:run
     - autorId (optional)
     - editorialId (optional)
 - `GET /search/{txt}` - Search books (title, author, publisher) by txt
+- `DELETE /eliminar/{isbn}` - Hard delete book
     
 ### Authors (`/api/autor`)
 - `GET /` - List all authors

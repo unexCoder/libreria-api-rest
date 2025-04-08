@@ -94,6 +94,15 @@ public class LibroServicio {
         return libroRepositorio.findLibrosByText(txt);
     }
     
+
+    @Transactional
+    public void eliminarLibroHard(Long isbn) {
+        Libro libro = libroRepositorio.findById(isbn)
+            .orElseThrow(() -> new RuntimeException("No existe el libro con ISBN: " + isbn));
+        libroRepositorio.deleteById(libro.getIsbn());
+    }
+
+
     // private methods
     private LibroDTO convertToDTO(Libro libro) {
         LibroDTO dto = new LibroDTO();

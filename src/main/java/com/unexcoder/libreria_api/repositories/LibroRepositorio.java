@@ -12,41 +12,42 @@ import com.unexcoder.libreria_api.models.LibroActivoDTO;
 import com.unexcoder.libreria_api.models.LibroDetailDTO;
 import com.unexcoder.libreria_api.models.LibrosAutorDTO;
 import com.unexcoder.libreria_api.models.LibrosEditorialDTO;
-// import com.unexcoder.libreria_api.models.LibroActivoDTO;
 import com.unexcoder.libreria_api.projections.LibroActivo;
 
 @Repository
 public interface LibroRepositorio extends JpaRepository<Libro, Long> {
 
-   @Query("SELECT new com.unexcoder.libreria_api.models.LibroActivoDTO(l.titulo, l.ejemplares) FROM Libro l WHERE l.activo = true")
-   List<LibroActivoDTO> listarActivosDTO();
+      @Query("SELECT new com.unexcoder.libreria_api.models.LibroActivoDTO(l.titulo, l.ejemplares) FROM Libro l WHERE l.activo = true")
+      List<LibroActivoDTO> listarActivosDTO();
 
-   @Query(value = "SELECT l.titulo as titulo, l.ejemplares as ejemplares FROM libro l WHERE l.activo = true", nativeQuery = true)
-   List<LibroActivo> listarActivos();
+      // using projection
+      @Query(value = "SELECT l.titulo as titulo, l.ejemplares as ejemplares FROM libro l WHERE l.activo = true", nativeQuery = true)
+      List<LibroActivo> listarActivos();
 
-   @Query("SELECT new com.unexcoder.libreria_api.models.LibrosEditorialDTO(l.titulo, l.ejemplares, l.autor.nombre, l.activo) "
-         +
-         "FROM Libro l WHERE l.editorial.id = :id")
-   List<LibrosEditorialDTO> findLibrosByEditorial(@Param("id") UUID id);
+      @Query("SELECT new com.unexcoder.libreria_api.models.LibrosEditorialDTO(l.titulo, l.ejemplares, l.autor.nombre, l.activo) "
+                  +
+                  "FROM Libro l WHERE l.editorial.id = :id")
+      List<LibrosEditorialDTO> findLibrosByEditorial(@Param("id") UUID id);
 
-   @Query("SELECT new com.unexcoder.libreria_api.models.LibrosAutorDTO(l.titulo, l.ejemplares, l.editorial.nombre, l.activo) "
-         +
-         "FROM Libro l WHERE l.autor.id = :id")
-   List<LibrosAutorDTO> findLibrosByAutor(@Param("id") UUID id);
+      @Query("SELECT new com.unexcoder.libreria_api.models.LibrosAutorDTO(l.titulo, l.ejemplares, l.editorial.nombre, l.activo) "
+                  +
+                  "FROM Libro l WHERE l.autor.id = :id")
+      List<LibrosAutorDTO> findLibrosByAutor(@Param("id") UUID id);
 
-   @Query("SELECT new com.unexcoder.libreria_api.models.LibroDetailDTO(" +
-       "l.isbn, l.titulo, l.ejemplares, l.autor.nombre, l.editorial.nombre, l.activo) " +
-       "FROM Libro l " +
-       "WHERE (:autorId IS NULL OR l.autor.id = :autorId) " +
-       "AND (:editorialId IS NULL OR l.editorial.id = :editorialId)")
-   List<LibroDetailDTO> findLibrosByAutorOrEditorial(@Param("autorId") UUID autorId, @Param("editorialId") UUID editorialId);
+      @Query("SELECT new com.unexcoder.libreria_api.models.LibroDetailDTO(" +
+                  "l.isbn, l.titulo, l.ejemplares, l.autor.nombre, l.editorial.nombre, l.activo) " +
+                  "FROM Libro l " +
+                  "WHERE (:autorId IS NULL OR l.autor.id = :autorId) " +
+                  "AND (:editorialId IS NULL OR l.editorial.id = :editorialId)")
+      List<LibroDetailDTO> findLibrosByAutorOrEditorial(@Param("autorId") UUID autorId,
+                  @Param("editorialId") UUID editorialId);
 
-   @Query("SELECT new com.unexcoder.libreria_api.models.LibroDetailDTO(" +
-       "l.isbn, l.titulo, l.ejemplares, l.autor.nombre, l.editorial.nombre, l.activo) " +
-       "FROM Libro l " +
-       "WHERE (LOWER(l.titulo) LIKE LOWER(CONCAT('%', :txt, '%')) OR " +
-       "      LOWER(l.autor.nombre) LIKE LOWER(CONCAT('%', :txt, '%')) OR " +
-       "      LOWER(l.editorial.nombre) LIKE LOWER(CONCAT('%', :txt, '%'))) ")
+      @Query("SELECT new com.unexcoder.libreria_api.models.LibroDetailDTO(" +
+                  "l.isbn, l.titulo, l.ejemplares, l.autor.nombre, l.editorial.nombre, l.activo) " +
+                  "FROM Libro l " +
+                  "WHERE (LOWER(l.titulo) LIKE LOWER(CONCAT('%', :txt, '%')) OR " +
+                  "      LOWER(l.autor.nombre) LIKE LOWER(CONCAT('%', :txt, '%')) OR " +
+                  "      LOWER(l.editorial.nombre) LIKE LOWER(CONCAT('%', :txt, '%'))) ")
       List<LibroDetailDTO> findLibrosByText(
-       @Param("txt") String txt);
+                  @Param("txt") String txt);
 }
